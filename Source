@@ -1,0 +1,923 @@
+import csv
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+import sys
+
+gui = tk.Tk()
+gui.geometry('645x860')
+gui.title("DVPet_Test Save Editor V1.1 Created by Patman124")
+gui.configure(bg='grey')
+gui.resizable(False, False)
+gui.iconbitmap('SaveEditorIcon.ico')
+
+    # Define functions for loading and saving files
+
+# Load file
+def browse_button_func():
+    global item
+    global lines
+    try:
+        open_file = filedialog.askopenfilename(initialdir='./', title="Open Save File", filetypes=[("Save files", "*.sav")])
+        with open(open_file) as file_open:
+            csv_reader = csv.reader(file_open, delimiter=',')
+
+            # Import Save File items to List
+            item = []
+
+            for x in csv_reader:
+                for r in x:
+                    item.append(r)
+        file_open.close()
+        
+        file= open(open_file, 'r')
+        lines = file.readlines()
+        file_open.close()
+    except FileNotFoundError:
+        sys.exit()
+    except FileExistsError:
+        sys.exit()
+    except NameError:
+        sys.exit()
+        
+truefalse = ['true', 'false']
+personality = ['-1','0','1']
+enthusiasm_list = ["-10","-9","-8","-7","-6","-5","-4","-3","-1","0","1","2","3","4","5","6","7","8","9","10"]
+happiness_list = ["0","1","2"]
+
+# Prompt for save file when opening the program
+browse_button_func()
+
+# Define Items for modification
+# System setting override
+speed_mult = item[3]
+dv_scale = item[5]  # 1.0,2.0,3.0
+
+# General Changes
+bits = item[112]
+hunger = item[36]
+strength = item[37]
+energy = item[38]
+vaccine_power = item[43]
+data_power = item[44]
+virus_power = item[45]
+age = item[31]
+weight = item[39]
+mood = item[20] #(-300,300)
+happiness = item[21] #(2=unhappy, 1= neutral, 0=happy)
+obedience = item[23] #(0-100)
+enthusiasm = item[22] #(-10,10)
+
+# Favorites
+unlocked_food = item[97]
+fav_food = item[13]  # (0=vitamin, 1=meat, 2=fish, 3=apple 4=radish)
+unlocked_attack = item[98]
+fav_attack = item[14]  #(0=circle, 1=square, 2=triangle)
+unlocked_time = item[99]
+fav_time = item[86]
+
+# Personality
+glutton = item[24] #(-1, 0, 1)
+restless = item[25] #(-1, 0, 1)
+disposition = item[26] #(-1, 0, 1)
+
+# Lifespan
+total_lifespan = item[48]# in seconds
+lapsed_life = item[49]# in seconds
+growth_period = item[51] #(next digivolution attempt) in seconds
+
+# Training
+morning_train = item[83]
+day_train = item[84]
+night_train = item[85]
+
+# Status Conditions
+alive = item[52]
+first_death = item[118]
+
+lights_on = item[61]
+is_napping = item[70]
+
+is_asleep = item[60]
+sleep_lapse = item[77]
+awake_lapse = item[79]
+
+is_injured = item[62]
+injured_count = item[65]
+healed_lapse = item[74]
+
+
+is_sick = item[63]
+sick_count = item[64]
+cured_lapse = item[73]
+
+fatigue_lapse = item[75]
+fatigue_mod = item[76]
+
+is_fully_recovered = item[81] #(heart)
+recovery_time = item[82]
+
+# Mistakes
+disturb = item[54]
+overeat = item[55]
+mistake_day = item[57]
+care_mistake = item[56]
+
+# Battles
+battles = item[46]
+wins = item[47]
+bm_gauge = item[59]
+perfect_wins = item[89]
+raw_life = item[120]# Lives in quest Default 3
+bonus = item[32]
+health_points = item[41]
+
+#X-Antibody
+x_antibody = item[117]
+
+# Environment
+weather = item[110] #(0=clear,1=rain,2=snow)
+current_temp = item[113]
+current_habitat = item[115]
+temp_goal = item[116]
+
+# Later lines
+second_line = [lines[1]]
+third_line = [lines[2]]
+fourth_line = [lines[3]]
+fifth_line = [lines[4]]
+sixth_line = [lines[5]]
+seventh_line = [lines[6]]
+eighth_line = [lines[7]]
+ninth_line = [lines[8]]
+tenth_line = [lines[9]]
+eleventh_line = [lines[10]]
+twelvth_line = [lines[11]]
+thirteenth_line = [lines[12]]
+fourteenth_line = [lines[13]]
+fifteenth_line = [lines[14]]
+sixteenth_line = [lines[15]]
+seventeenth_line = [lines[16]]
+eighteenth_line = [lines[17]]
+ninteenth_line = [lines[18]]
+twentieth_line = [lines[19]]
+twentyfirst_line = [lines[20]]
+
+# Define Save File Function
+
+def save_button_func():
+    try:
+        speed_mult = speed_entry.get()
+        dv_scale = dv_scale_entry.get()
+        bits = bits_entry.get()
+        hunger = hunger_entry.get()
+        strength = strength_entry.get()
+        energy = energy_entry.get()
+        vaccine_power = vaccine_power_entry.get()
+        data_power = data_power_entry.get()
+        virus_power = virus_power_entry.get()
+        age = age_entry.get()
+        weight = weight_entry.get()
+        mood = mood_entry.get()
+        happiness = happiness_entry.get()
+        obedience = obedience_entry.get()
+        enthusiasm = enthusiasm_entry.get()
+        unlocked_food = unlocked_food_entry.get()
+        fav_food = fav_food_entry.get()
+        unlocked_attack = unlocked_attack_entry.get()
+        fav_attack = fav_attack_entry.get()
+        unlocked_time = unlocked_time_entry.get()
+        fav_time = fav_time_entry.get()
+        glutton = glutton_entry.get()
+        restless = restless_entry.get()
+        disposition = disposition_entry.get()
+        total_lifespan = total_lifespan_entry.get()
+        lapsed_life = lapsed_life_entry.get()
+        growth_period = growth_period_entry.get()
+        morning_train = morning_train_entry.get()
+        day_train = day_train_entry.get()
+        night_train = night_train_entry.get()
+        alive = alive_entry.get()
+        first_death = first_death_entry.get()
+        lights_on = lights_on_entry.get()
+        is_napping = is_napping_entry.get()
+        is_asleep = is_asleep_entry.get()
+        sleep_lapse = sleep_lapse_entry.get()
+        awake_lapse = awake_lapse_entry.get()
+        is_injured = is_injured_entry.get()
+        injured_count = injured_count_entry.get()
+        healed_lapse = healed_lapse_entry.get()
+        is_sick = is_sick_entry.get()
+        sick_count = sick_count_entry.get()
+        cured_lapse = cured_lapse_entry.get()
+        fatigue_lapse = fatigue_lapse_entry.get()
+        fatigue_mod = fatigue_mod_entry.get()
+        is_fully_recovered = is_fully_recovered_entry.get()
+        recovery_time = recovery_time_entry.get()
+        disturb = disturb_entry.get()
+        overeat = overeat_entry.get()
+        mistake_day = mistake_day_entry.get()
+        care_mistake = care_mistake_entry.get()
+        battles = battles_entry.get()
+        wins = wins_entry.get()
+        bm_gauge = bm_gauge_entry.get()
+        perfect_wins = perfect_wins_entry.get()
+        raw_life = raw_life_entry.get()
+        bonus = bonus_entry.get()
+        health_points = health_points_entry.get()
+        x_antibody = x_antibody_entry.get()
+        weather = weather_entry.get()
+        current_temp = current_temp_entry.get()
+        current_habitat = current_habitat_entry.get()
+        temp_goal = temp_goal_entry.get()
+        
+
+        
+        # Save File Structure Defined
+        export = '{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}'.format(
+            item[0], item[1], item[2], speed_mult, item[4], dv_scale, item[6], item[7], item[8], item[9], item[10], item[11], item[12], fav_food, fav_attack, item[15], item[16], item[17], item[18], item[19], mood, happiness, enthusiasm, obedience, glutton, restless, disposition, item[27], item[28], item[29], item[30], age, bonus, item[33], item[34], item[35], hunger, strength, energy, weight, item[40], health_points, item[42], vaccine_power, data_power, virus_power, battles, wins, total_lifespan, lapsed_life, item[50], growth_period, alive, item[53], disturb, overeat, care_mistake, mistake_day, item[58], bm_gauge, is_asleep, lights_on, is_injured, is_sick, sick_count, injured_count, item[66], item[67], item[68], item[69], is_napping, item[71], item[72], cured_lapse, healed_lapse, fatigue_lapse, fatigue_mod, sleep_lapse, item[78], awake_lapse, item[80], is_fully_recovered, recovery_time, morning_train, day_train, night_train, fav_time, item[87], item[88], perfect_wins, item[90], item[91], item[92], item[93], item[94], item[95], item[96], unlocked_food, unlocked_attack, unlocked_time, item[100], item[101], item[102], item[103], item[104], item[105], item[106], item[107], item[108], item[109], weather, item[111], bits, current_temp, item[114], current_habitat, temp_goal, x_antibody, first_death, item[119], raw_life, item[121], item[122], item[123], item[124], item[125], item[126], item[127], item[128], item[129], item[130], item[131], item[132], item[133], item[134], item[135], item[136], item[137], item[138], item[139], item[140], item[141], item[142], item[143], item[144], item[145], item[146], item[147], item[148], item[149], item[150], item[151],second_line[0],third_line[0],fourth_line[0],fifth_line[0], sixth_line[0],seventh_line[0],eighth_line[0],ninth_line[0],tenth_line[0],eleventh_line[0],twelvth_line[0],thirteenth_line[0],fourteenth_line[0],fifteenth_line[0],sixteenth_line[0],seventeenth_line[0],eighteenth_line[0],ninteenth_line[0],twentieth_line[0],twentyfirst_line[0])
+
+        save_file = filedialog.asksaveasfile(initialdir='./', title="Save File", filetypes=[("Save files", "*.sav")])
+        save_file.write(export)
+        save_file.close()
+        status_label.config(text="File Saved!")
+    except AttributeError:
+        status_label.config(text="Error Saving File")
+        pass
+
+# Frames
+system_frame = LabelFrame(gui, text="System setting override", padx=10, pady=10)
+system_frame.place(x=10, y=10)
+general_frame = LabelFrame(gui, text="General", padx=10, pady=15)
+general_frame.place(x=10, y=135)
+favorites_frame = LabelFrame(gui, text="Favorites", padx=10, pady=10)
+favorites_frame.place(x=170, y=10)
+personality_frame = LabelFrame(gui, text="Personality")
+personality_frame.place(x=170, y=335)
+lifespan_frame = LabelFrame(gui, text="Lifespan", padx=10, pady=10)
+lifespan_frame.place(x=170, y=516)
+training_frame = LabelFrame(gui, text="Training", padx=10)
+training_frame.place(x=170, y=687)
+status_conditions_frame = LabelFrame(gui, text="Status Conditions", padx=10, pady=10)
+status_conditions_frame.place(x=330, y=10)
+mistakes_frame = LabelFrame(gui, text="Mistakes", padx=10, pady=10)
+mistakes_frame.place(x=490, y=10)
+battles_frame = LabelFrame(gui, text="Battles", padx=10, pady=10)
+battles_frame.place(x=490, y=220)
+xantibody_frame = LabelFrame(gui, text="X-Antibody", padx=10, pady=10)
+xantibody_frame.place(x=10, y=735)
+environment_frame = LabelFrame(gui, text="Environment", padx=10, pady=10)
+environment_frame.place(x=490, y=550)
+
+# Define Hover Text
+def Hover_Leave(e):
+    status_label.config(text="")
+def speed_mult_box_hover(e):
+    status_label.config(text="This effects the game speed. (Default is 1)")
+def dv_scale_box_hover(e):
+    status_label.config(text="Console Scale (Default is 1.0, 2.0 or 3.0)")
+def bits_box_hover(e):
+    status_label.config(text="This effects the amount of bits currency")
+def hunger_box_hover(e):
+    status_label.config(text="Controls the current hunger hearts")
+def strength_box_hover(e):
+    status_label.config(text="Controls the current strength hearts")
+def energy_box_hover(e):
+    status_label.config(text="Controls the current remaining energy. (Full is 25)")
+def vaccine_power_box_hover(e):
+    status_label.config(text="Controls the Vaccine (circle) training level")
+def data_power_box_hover(e):
+    status_label.config(text="Controls the Data (square) training level")
+def virus_power_box_hover(e):
+    status_label.config(text="Controls the Virus (triangle) training level")
+def age_box_hover(e):
+    status_label.config(text="Controls the current age of the digimon")
+def weight_box_hover(e):
+    status_label.config(text="Controls the Digimon's Weight")
+def mood_box_hover(e):
+    status_label.config(text="Controls the current mood. (-300 to 300). Should be changed to match Happiness")
+def happiness_box_hover(e):
+    status_label.config(text="Controls the current happiness. (2=unhappy, 1= neutral, 0=happy). Should be changed to match mood")
+def obedience_box_hover(e):
+    status_label.config(text="Controls the current obedience. (0 to 100)")
+def enthusiasm_box_hover(e):
+    status_label.config(text="Controls the current Digimon's enthusiasm for training. (-10 to 10)")
+def unlocked_food_box_hover(e):
+    status_label.config(text="Controls whether you have discovered the Digimon's Favorite Food(valid options: true/false)")
+def fav_food_box_hover(e):
+    status_label.config(text="Controls the Digimon's Favorite Food(valid options: 1=meat, 2=fish, 3=apple 4=radish)")
+def unlocked_attack_box_hover(e):
+    status_label.config(text="Controls whether you have discovered the Digimon's Favorite attack type(valid options: true/false)")
+def fav_attack_box_hover(e):
+    status_label.config(text="Controls the Digimon's Favorite Attack Type (valid options: 0=Vaccine(circle), 1=Data(Square), 2=Virus(Triangle)")
+def unlocked_time_box_hover(e):
+    status_label.config(text="Controls whether you have discovered the Digimon's Favorite Time to train(valid options: true/false)")
+def fav_time_box_hover(e):
+    status_label.config(text="Controls the Digimon's Favorite time to train (valid options: 0=Morning, 1=Day, 2=Night)")
+def glutton_box_hover(e):
+    status_label.config(text="Controls how often your Digimon needs to eat. (valid options: -1 , 0, 1)")
+def restless_box_hover(e):
+    status_label.config(text="Controls how often your Digimon needs to replenish it's strength. (valid options: -1 , 0, 1)")
+def disposition_box_hover(e):
+    status_label.config(text="Controls how difficult it is to keep your Digimon Happy. (valid options: -1 , 0, 1)")
+def total_lifespan_box_hover(e):
+    status_label.config(text="Controls the Digimon's maximum lifespan in seconds.")
+def lapsed_life_box_hover(e):
+    status_label.config(text="Controls the Digimon's current life in seconds.")
+def growth_period_box_hover(e):
+    status_label.config(text="Controls the Digimon's next Digivolution attempt in seconds.")
+def morning_train_box_hover(e):
+    status_label.config(text="Controls the amount of times your Digimon has trained during the morning")
+def day_train_box_hover(e):
+    status_label.config(text="Controls the amount of times your Digimon has trained during the day")
+def night_train_box_hover(e):
+    status_label.config(text="Controls the amount of times your Digimon has trained during the night")
+def alive_box_hover(e):
+    status_label.config(text="Controls whether your digimon is alive or not(valid options: true/false)")
+def first_death_box_hover(e):
+    status_label.config(text="Controls whether this save file has had it's first death(valid options: true/false)")
+def lights_on_box_hover(e):
+    status_label.config(text="Controls whether the lite is on(valid options: true/false)")
+def is_napping_box_hover(e):
+    status_label.config(text="Controls whether your digimon is napping(valid options: true/false)")
+def is_asleep_box_hover(e):
+    status_label.config(text="Controls whether your digimon is asleep(valid options: true/false)")
+def sleep_lapse_box_hover(e):
+    status_label.config(text="Controls how long your digimon has been awake")
+def awake_lapse_box_hover(e):
+    status_label.config(text="Controls how long your digimon has been asleep")
+def is_injured_box_hover(e):
+    status_label.config(text="Controls whether your digimon is injured(valid options: true/false)")
+def injured_count_box_hover(e):
+    status_label.config(text="Controls the amount of times your digimon has been injured")
+def healed_lapse_box_hover(e):
+    status_label.config(text="Controls how long the bandage has been in affect")
+def is_sick_box_hover(e):
+    status_label.config(text="Controls whether your digimon is sick(valid options: true/false)")
+def sick_count_box_hover(e):
+    status_label.config(text="Controls the amount of times your digimon has been sick")
+def cured_lapse_box_hover(e):
+    status_label.config(text="Controls how long the medicine has been in affect")
+def fatigue_lapse_box_hover(e):
+    status_label.config(text="Controls how long your digimon has been fatigued")
+def fatigue_mod_box_hover(e):
+    status_label.config(text="Controls the additional time your Digimon is fatigued.")
+def is_fully_recovered_box_hover(e):
+    status_label.config(text="Controls whether or not your Digimon is ready to train(valid options: true/false)")
+def recovery_time_box_hover(e):
+    status_label.config(text="Controls how much longer your Digimon's recovery time is")
+def disturb_box_hover(e):
+    status_label.config(text="Controls how many times your Digimon's sleep has been disturbed")
+def overeat_box_hover(e):
+    status_label.config(text="Controls how many times your digimon has been over trained")
+def mistake_day_box_hover(e):
+    status_label.config(text="Controls how many mistake days have occured today")
+def care_mistake_box_hover(e):
+    status_label.config(text="Controls how many care mistakes have occured during the current stage")
+def battles_box_hover(e):
+    status_label.config(text="Controls how many battles your Digimon has been in")
+def wins_box_hover(e):
+    status_label.config(text="Controls how many wins your Digimon has in battle")
+def bm_gauge_box_hover(e):
+    status_label.config(text="Controls how much your BM Guage is filled")
+def perfect_wins_box_hover(e):
+    status_label.config(text="Controls how many perfect wins your digimon has")
+def raw_life_box_hover(e):
+    status_label.config(text="Controls how many hearth you have while exploring in quest mode *Default: 3)")
+def bonus_box_hover(e):
+    status_label.config(text="Controls how many bonus points your Digimon has based on days without a mistake day.")
+def health_points_box_hover(e):
+    status_label.config(text="Controls how many health points your Digimon has for battles")
+def x_antibody_box_hover(e):
+    status_label.config(text="Controls whether your digimon has the X Antibody")
+def weather_box_hover(e):
+    status_label.config(text="Controls the current weather (Valid options: 0=clear,1=rain,2=snow)")
+def current_temp_box_hover(e):
+    status_label.config(text="Controls the current temperature in your PC(Valid options: 0 to 100)")
+def current_habitat_box_hover(e):
+    status_label.config(text="Controls the current habitat on your PC (Valid Options 0 to 12)")
+def temp_goal_box_hover(e):
+    status_label.config(text="Controls the temperature goal (Valid options: 0 to 100)")
+
+# Define StringVar for objects
+speed_entry = StringVar()
+speed_entry.set(speed_mult)
+dv_scale_entry = StringVar()
+dv_scale_entry.set(dv_scale)
+bits_entry = StringVar()
+bits_entry.set(bits)
+hunger_entry = StringVar()
+hunger_entry.set(hunger)
+strength_entry = StringVar()
+strength_entry.set(strength)
+energy_entry = StringVar()
+energy_entry.set(energy)
+vaccine_power_entry = StringVar()
+vaccine_power_entry.set(vaccine_power)
+data_power_entry = StringVar()
+data_power_entry.set(data_power)
+virus_power_entry = StringVar()
+virus_power_entry.set(virus_power)
+age_entry = StringVar()
+age_entry.set(age)
+weight_entry = StringVar()
+weight_entry.set(weight)
+mood_entry = StringVar()
+mood_entry.set(mood)
+happiness_entry = StringVar()
+happiness_entry.set(happiness)
+obedience_entry = StringVar()
+obedience_entry.set(obedience)
+enthusiasm_entry = StringVar()
+enthusiasm_entry.set(enthusiasm)
+unlocked_food_entry = StringVar()
+unlocked_food_entry.set(unlocked_food)
+fav_food_entry = StringVar()
+fav_food_entry.set(fav_food)
+unlocked_attack_entry = StringVar()
+unlocked_attack_entry.set(unlocked_attack)
+fav_attack_entry = StringVar()
+fav_attack_entry.set(fav_attack)
+unlocked_time_entry = StringVar()
+unlocked_time_entry.set(unlocked_time)
+fav_time_entry = StringVar()
+fav_time_entry.set(fav_time)
+glutton_entry = StringVar()
+glutton_entry.set(glutton)
+restless_entry = StringVar()
+restless_entry.set(restless)
+disposition_entry = StringVar()
+disposition_entry.set(disposition)
+total_lifespan_entry = StringVar()
+total_lifespan_entry.set(total_lifespan)
+lapsed_life_entry = StringVar()
+lapsed_life_entry.set(lapsed_life)
+growth_period_entry = StringVar()
+growth_period_entry.set(growth_period)
+morning_train_entry=StringVar()
+morning_train_entry.set(morning_train)
+day_train_entry=StringVar()
+day_train_entry.set(day_train)
+night_train_entry=StringVar()
+night_train_entry.set(night_train)
+alive_entry=StringVar()
+alive_entry.set(alive)
+first_death_entry=StringVar()
+first_death_entry.set(first_death)
+lights_on_entry=StringVar()
+lights_on_entry.set(lights_on)
+is_napping_entry=StringVar()
+is_napping_entry.set(is_napping)
+is_asleep_entry=StringVar()
+is_asleep_entry.set(is_asleep)
+sleep_lapse_entry=StringVar()
+sleep_lapse_entry.set(sleep_lapse)
+awake_lapse_entry=StringVar()
+awake_lapse_entry.set(awake_lapse)
+is_injured_entry=StringVar()
+is_injured_entry.set(is_injured)
+injured_count_entry=StringVar()
+injured_count_entry.set(injured_count)
+healed_lapse_entry=StringVar()
+healed_lapse_entry.set(healed_lapse)
+is_sick_entry=StringVar()
+is_sick_entry.set(is_sick)
+sick_count_entry=StringVar()
+sick_count_entry.set(sick_count)
+cured_lapse_entry=StringVar()
+cured_lapse_entry.set(cured_lapse)
+fatigue_lapse_entry=StringVar()
+fatigue_lapse_entry.set(fatigue_lapse)
+fatigue_mod_entry=StringVar()
+fatigue_mod_entry.set(fatigue_mod)
+is_fully_recovered_entry=StringVar()
+is_fully_recovered_entry.set(is_fully_recovered)
+recovery_time_entry=StringVar()
+recovery_time_entry.set(recovery_time)
+disturb_entry=StringVar()
+disturb_entry.set(disturb)
+overeat_entry=StringVar()
+overeat_entry.set(overeat)
+mistake_day_entry=StringVar()
+mistake_day_entry.set(mistake_day)
+care_mistake_entry=StringVar()
+care_mistake_entry.set(care_mistake)
+battles_entry=StringVar()
+battles_entry.set(battles)
+wins_entry=StringVar()
+wins_entry.set(wins)
+bm_gauge_entry=StringVar()
+bm_gauge_entry.set(bm_gauge)
+perfect_wins_entry=StringVar()
+perfect_wins_entry.set(perfect_wins)
+raw_life_entry=StringVar()
+raw_life_entry.set(raw_life)
+bonus_entry=StringVar()
+bonus_entry.set(bonus)
+health_points_entry=StringVar()
+health_points_entry.set(health_points)
+x_antibody_entry=StringVar()
+x_antibody_entry.set(x_antibody)
+weather_entry=StringVar()
+weather_entry.set(weather)
+current_temp_entry=StringVar()
+current_temp_entry.set(current_temp)
+current_habitat_entry=StringVar()
+current_habitat_entry.set(current_habitat)
+temp_goal_entry=StringVar()
+temp_goal_entry.set(temp_goal)
+
+# Define screen objects
+save_button = Button(gui, text='Save', command=save_button_func, padx=20)
+speed_text = Label(system_frame, text='Game Speed Multiplier')
+speed_mult_box = Entry(system_frame, textvariable=speed_entry)
+dv_scale_text = Label(system_frame, text='Console Scale')
+dv_scale_box = Entry(system_frame, textvariable=dv_scale_entry)
+bits_text = Label(general_frame, text='Bits')
+bits_box = Entry(general_frame, textvariable=bits_entry)
+hunger_text = Label(general_frame, text='Hunger')
+hunger_box = Entry(general_frame, textvariable=hunger_entry)
+strength_text = Label(general_frame, text='Strength')
+strength_box = Entry(general_frame, textvariable=strength_entry)
+energy_text = Label(general_frame, text='Energy')
+energy_box = Entry(general_frame, textvariable=energy_entry)
+vaccine_power_text = Label(general_frame, text='Vaccine Training Level')
+vaccine_power_box = Entry(general_frame, textvariable=vaccine_power_entry)
+data_power_text = Label(general_frame, text='Data Training Level')
+data_power_box = Entry(general_frame, textvariable=data_power_entry)
+virus_power_text = Label(general_frame, text='Virus Training Level')
+virus_power_box = Entry(general_frame, textvariable=virus_power_entry)
+age_text = Label(general_frame, text='Age')
+age_box = Entry(general_frame, textvariable=age_entry)
+weight_text = Label(general_frame, text='Weight')
+weight_box = Entry(general_frame, textvariable=weight_entry)
+mood_text = Label(general_frame, text='Mood')
+mood_box = Entry(general_frame, textvariable=mood_entry)
+happiness_text = Label(general_frame, text='Happiness')
+happiness_box = OptionMenu(general_frame, happiness_entry, *happiness_list)
+obedience_text = Label(general_frame, text='Obedience')
+obedience_box = Entry(general_frame, textvariable=obedience_entry)
+enthusiasm_text = Label(general_frame, text='Training Enthusiasm')
+enthusiasm_box = OptionMenu(general_frame, enthusiasm_entry, *enthusiasm_list)
+unlocked_food_text = Label(favorites_frame, text='Unlocked Food')
+unlocked_food_box = OptionMenu(favorites_frame, unlocked_food_entry, *truefalse)
+fav_food_text = Label(favorites_frame, text='Favorite Food')
+fav_food_box = Entry(favorites_frame, textvariable=fav_food_entry)
+unlocked_attack_text = Label(favorites_frame, text='Unlocked Attack')
+unlocked_attack_box = OptionMenu(favorites_frame, unlocked_attack_entry, *truefalse)
+fav_attack_text = Label(favorites_frame, text='Favorite Attack')
+fav_attack_box = Entry(favorites_frame, textvariable=fav_attack_entry)
+unlocked_time_text = Label(favorites_frame, text='Unlocked Time')
+unlocked_time_box = OptionMenu(favorites_frame, unlocked_time_entry, *truefalse)
+fav_time_text = Label(favorites_frame, text='Favorite Time')
+fav_time_box = Entry(favorites_frame, textvariable=fav_time_entry)
+glutton_text = Label(personality_frame, text='Glutton')
+glutton_box = OptionMenu(personality_frame, glutton_entry, *personality)
+restless_text = Label(personality_frame, text='Restless')
+restless_box = OptionMenu(personality_frame, restless_entry, *personality)
+disposition_text = Label(personality_frame, text='Disposition')
+disposition_box = OptionMenu(personality_frame, disposition_entry, *personality)
+total_lifespan_text = Label(lifespan_frame, text='Total Lifespan')
+total_lifespan_box = Entry(lifespan_frame, textvariable=total_lifespan_entry)
+lapsed_life_text = Label(lifespan_frame, text='Lapsed Life')
+lapsed_life_box = Entry(lifespan_frame, textvariable=lapsed_life_entry)
+growth_period_text = Label(lifespan_frame, text='Growth Period')
+growth_period_box = Entry(lifespan_frame, textvariable=growth_period_entry)
+morning_train_text = Label(training_frame, text='Morning Train')
+morning_train_box = Entry(training_frame, textvariable = morning_train_entry)
+day_train_text = Label(training_frame, text='Day Train')
+day_train_box = Entry(training_frame, textvariable = day_train_entry)
+night_train_text = Label(training_frame, text='Night Train')
+night_train_box = Entry(training_frame, textvariable = night_train_entry)
+alive_text = Label(status_conditions_frame, text='Alive')
+alive_box = OptionMenu(status_conditions_frame, alive_entry, *truefalse)
+first_death_text = Label(status_conditions_frame, text='First Death')
+first_death_box = OptionMenu(status_conditions_frame, first_death_entry, *truefalse)
+lights_on_text = Label(status_conditions_frame, text='Lights On')
+lights_on_box = OptionMenu(status_conditions_frame, lights_on_entry, *truefalse)
+is_napping_text = Label(status_conditions_frame, text='Is Napping')
+is_napping_box = OptionMenu(status_conditions_frame, is_napping_entry, *truefalse)
+is_asleep_text = Label(status_conditions_frame, text='Is Asleep')
+is_asleep_box = OptionMenu(status_conditions_frame, is_asleep_entry, *truefalse)
+sleep_lapse_text = Label(status_conditions_frame, text='Sleep Lapse')
+sleep_lapse_box = Entry(status_conditions_frame, textvariable = sleep_lapse_entry)
+awake_lapse_text = Label(status_conditions_frame, text='Awake Lapse')
+awake_lapse_box = Entry(status_conditions_frame, textvariable = awake_lapse_entry)
+is_injured_text = Label(status_conditions_frame, text='Is Injured')
+is_injured_box = OptionMenu(status_conditions_frame, is_injured_entry, *truefalse)
+injured_count_text = Label(status_conditions_frame, text='Injured Count')
+injured_count_box = Entry(status_conditions_frame, textvariable = injured_count_entry)
+healed_lapse_text = Label(status_conditions_frame, text='Healed Lapse')
+healed_lapse_box = Entry(status_conditions_frame, textvariable = healed_lapse_entry)
+is_sick_text = Label(status_conditions_frame, text='Is Sick')
+is_sick_box = OptionMenu(status_conditions_frame, is_sick_entry, *truefalse)
+sick_count_text = Label(status_conditions_frame, text='Sick Count')
+sick_count_box = Entry(status_conditions_frame, textvariable = sick_count_entry)
+cured_lapse_text = Label(status_conditions_frame, text='Cured Lapse')
+cured_lapse_box = Entry(status_conditions_frame, textvariable = cured_lapse_entry)
+fatigue_lapse_text = Label(status_conditions_frame, text='Fatigue Lapse')
+fatigue_lapse_box = Entry(status_conditions_frame, textvariable = fatigue_lapse_entry)
+fatigue_mod_text = Label(status_conditions_frame, text='Fatigue Mod')
+fatigue_mod_box = Entry(status_conditions_frame, textvariable = fatigue_mod_entry)
+is_fully_recovered_text = Label(status_conditions_frame, text='Is Fully Recovered')
+is_fully_recovered_box = OptionMenu(status_conditions_frame, is_fully_recovered_entry, *truefalse)
+recovery_time_text = Label(status_conditions_frame, text='Recovery Time')
+recovery_time_box = Entry(status_conditions_frame, textvariable = recovery_time_entry)
+disturb_text = Label(mistakes_frame, text='Sleep Disturbed')
+disturb_box = Entry(mistakes_frame, textvariable = disturb_entry)
+overeat_text = Label(mistakes_frame, text='Overheat')
+overeat_box = Entry(mistakes_frame, textvariable = overeat_entry)
+mistake_day_text = Label(mistakes_frame, text='Mistake Day')
+mistake_day_box = Entry(mistakes_frame, textvariable = mistake_day_entry)
+care_mistake_text = Label(mistakes_frame, text='Care Mistakes')
+care_mistake_box = Entry(mistakes_frame, textvariable = care_mistake_entry)
+battles_text = Label(battles_frame, text='Number of Battles')
+battles_box = Entry(battles_frame, textvariable = battles_entry)
+wins_text = Label(battles_frame, text='Wins')
+wins_box = Entry(battles_frame, textvariable = wins_entry)
+bm_gauge_text = Label(battles_frame, text='BM Guage')
+bm_gauge_box = Entry(battles_frame, textvariable = bm_gauge_entry)
+perfect_wins_text = Label(battles_frame, text='Perfect Wins')
+perfect_wins_box = Entry(battles_frame, textvariable = perfect_wins_entry)
+raw_life_text = Label(battles_frame, text='Raw Life')
+raw_life_box = Entry(battles_frame, textvariable = raw_life_entry)
+bonus_text = Label(battles_frame, text='Bonus')
+bonus_box = Entry(battles_frame, textvariable = bonus_entry)
+health_points_text = Label(battles_frame, text='Health Points')
+health_points_box = Entry(battles_frame, textvariable = health_points_entry)
+x_antibody_text = Label(xantibody_frame, text='X-Antibody')
+x_antibody_box = OptionMenu(xantibody_frame, x_antibody_entry, *truefalse)
+weather_text = Label(environment_frame, text='Weather')
+weather_box = Entry(environment_frame, textvariable = weather_entry)
+current_temp_text = Label(environment_frame, text='Current Temperature')
+current_temp_box = Entry(environment_frame, textvariable = current_temp_entry)
+current_habitat_text = Label(environment_frame, text='Current Habitat')
+current_habitat_box = Entry(environment_frame, textvariable = current_habitat_entry)
+temp_goal_text = Label(environment_frame, text='Temperature Goal')
+temp_goal_box = Entry(environment_frame, textvariable = temp_goal_entry)
+
+# Screen Layout
+save_button.place(x=530, y=780)
+speed_text.pack()
+speed_mult_box.pack()
+dv_scale_text.pack()
+dv_scale_box.pack()
+bits_text.pack()
+bits_box.pack()
+hunger_text.pack()
+hunger_box.pack()
+strength_text.pack()
+strength_box.pack()
+energy_text.pack()
+energy_box.pack()
+vaccine_power_text.pack()
+vaccine_power_box.pack()
+data_power_text.pack()
+data_power_box.pack()
+virus_power_text.pack()
+virus_power_box.pack()
+age_text.pack()
+age_box.pack()
+weight_text.pack()
+weight_box.pack()
+mood_text.pack()
+mood_box.pack()
+happiness_text.pack()
+happiness_box.pack(ipadx=35)
+obedience_text.pack()
+obedience_box.pack()
+enthusiasm_text.pack()
+enthusiasm_box.pack(ipadx=35)
+unlocked_food_text.pack()
+unlocked_food_box.pack(ipadx=27)
+fav_food_text.pack()
+fav_food_box.pack()
+unlocked_attack_text.pack()
+unlocked_attack_box.pack(ipadx=27)
+fav_attack_text.pack()
+fav_attack_box.pack()
+unlocked_time_text.pack()
+unlocked_time_box.pack(ipadx=27)
+fav_time_text.pack()
+fav_time_box.pack()
+glutton_text.pack()
+glutton_box.pack(ipadx=45)
+restless_text.pack()
+restless_box.pack(ipadx=45)
+disposition_text.pack()
+disposition_box.pack(ipadx=45)
+total_lifespan_text.pack()
+total_lifespan_box.pack()
+lapsed_life_text.pack()
+lapsed_life_box.pack()
+growth_period_text.pack()
+growth_period_box.pack()
+morning_train_text.pack()
+morning_train_box.pack()
+day_train_text.pack()
+day_train_box.pack()
+night_train_text.pack()
+night_train_box.pack()
+alive_text.pack()
+alive_box.pack(ipadx=27)
+first_death_text.pack()
+first_death_box.pack(ipadx=27)
+lights_on_text.pack()
+lights_on_box.pack(ipadx=27)
+is_napping_text.pack()
+is_napping_box.pack(ipadx=27)
+is_asleep_text.pack()
+is_asleep_box.pack(ipadx=27)
+sleep_lapse_text.pack()
+sleep_lapse_box.pack()
+awake_lapse_text.pack()
+awake_lapse_box.pack()
+is_injured_text.pack()
+is_injured_box.pack(ipadx=27)
+injured_count_text.pack()
+injured_count_box.pack()
+healed_lapse_text.pack()
+healed_lapse_box.pack()
+is_sick_text.pack()
+is_sick_box.pack(ipadx=27)
+sick_count_text.pack()
+sick_count_box.pack()
+cured_lapse_text.pack()
+cured_lapse_box.pack()
+fatigue_lapse_text.pack()
+fatigue_lapse_box.pack()
+fatigue_mod_text.pack()
+fatigue_mod_box.pack()
+is_fully_recovered_text.pack()
+is_fully_recovered_box.pack(ipadx=27)
+recovery_time_text.pack()
+recovery_time_box.pack()
+disturb_text.pack()
+disturb_box.pack()
+overeat_text.pack()
+overeat_box.pack()
+mistake_day_text.pack()
+mistake_day_box.pack()
+care_mistake_text.pack()
+care_mistake_box.pack()
+battles_text.pack()
+battles_box.pack()
+wins_text.pack()
+wins_box.pack()
+bm_gauge_text.pack()
+bm_gauge_box.pack()
+perfect_wins_text.pack()
+perfect_wins_box.pack()
+raw_life_text.pack()
+raw_life_box.pack()
+bonus_text.pack()
+bonus_box.pack()
+health_points_text.pack()
+health_points_box.pack()
+x_antibody_text.pack()
+x_antibody_box.pack(ipadx=27)
+weather_text.pack()
+weather_box.pack()
+current_temp_text.pack()
+current_temp_box.pack()
+current_habitat_text.pack()
+current_habitat_box.pack()
+temp_goal_text.pack()
+temp_goal_box.pack()
+
+# Define Tool Tip Hover Functions
+#bits_box.bind("<Enter>", bits_box_hover)
+#bits_box.bind("<Leave>", Hover_Leave)
+speed_mult_box.bind("<Enter>", speed_mult_box_hover)
+speed_mult_box.bind("<Leave>", Hover_Leave)
+dv_scale_box.bind("<Enter>", dv_scale_box_hover)
+dv_scale_box.bind("<Leave>", Hover_Leave)
+bits_box.bind("<Enter>", bits_box_hover)
+bits_box.bind("<Leave>", Hover_Leave)
+hunger_box.bind("<Enter>", hunger_box_hover)
+hunger_box.bind("<Leave>", Hover_Leave)
+strength_box.bind("<Enter>", strength_box_hover)
+strength_box.bind("<Leave>", Hover_Leave)
+energy_box.bind("<Enter>", energy_box_hover)
+energy_box.bind("<Leave>", Hover_Leave)
+vaccine_power_box.bind("<Enter>", vaccine_power_box_hover)
+vaccine_power_box.bind("<Leave>", Hover_Leave)
+data_power_box.bind("<Enter>", data_power_box_hover)
+data_power_box.bind("<Leave>", Hover_Leave)
+virus_power_box.bind("<Enter>", virus_power_box_hover)
+virus_power_box.bind("<Leave>", Hover_Leave)
+age_box.bind("<Enter>", age_box_hover)
+age_box.bind("<Leave>", Hover_Leave)
+weight_box.bind("<Enter>", weight_box_hover)
+weight_box.bind("<Leave>", Hover_Leave)
+mood_box.bind("<Enter>", mood_box_hover)
+mood_box.bind("<Leave>", Hover_Leave)
+happiness_box.bind("<Enter>", happiness_box_hover)
+happiness_box.bind("<Leave>", Hover_Leave)
+obedience_box.bind("<Enter>", obedience_box_hover)
+obedience_box.bind("<Leave>", Hover_Leave)
+enthusiasm_box.bind("<Enter>", enthusiasm_box_hover)
+enthusiasm_box.bind("<Leave>", Hover_Leave)
+unlocked_food_box.bind("<Enter>", unlocked_food_box_hover)
+unlocked_food_box.bind("<Leave>", Hover_Leave)
+fav_food_box.bind("<Enter>", fav_food_box_hover)
+fav_food_box.bind("<Leave>", Hover_Leave)
+unlocked_attack_box.bind("<Enter>", unlocked_attack_box_hover)
+unlocked_attack_box.bind("<Leave>", Hover_Leave)
+fav_attack_box.bind("<Enter>", fav_attack_box_hover)
+fav_attack_box.bind("<Leave>", Hover_Leave)
+unlocked_time_box.bind("<Enter>", unlocked_time_box_hover)
+unlocked_time_box.bind("<Leave>", Hover_Leave)
+fav_time_box.bind("<Enter>", fav_time_box_hover)
+fav_time_box.bind("<Leave>", Hover_Leave)
+glutton_box.bind("<Enter>", glutton_box_hover)
+glutton_box.bind("<Leave>", Hover_Leave)
+restless_box.bind("<Enter>", restless_box_hover)
+restless_box.bind("<Leave>", Hover_Leave)
+disposition_box.bind("<Enter>", disposition_box_hover)
+disposition_box.bind("<Leave>", Hover_Leave)
+total_lifespan_box.bind("<Enter>", total_lifespan_box_hover)
+total_lifespan_box.bind("<Leave>", Hover_Leave)
+lapsed_life_box.bind("<Enter>", lapsed_life_box_hover)
+lapsed_life_box.bind("<Leave>", Hover_Leave)
+growth_period_box.bind("<Enter>", growth_period_box_hover)
+growth_period_box.bind("<Leave>", Hover_Leave)
+morning_train_box.bind("<Enter>",morning_train_box_hover)
+morning_train_box.bind("<Leave>", Hover_Leave)
+day_train_box.bind("<Enter>",day_train_box_hover)
+day_train_box.bind("<Leave>", Hover_Leave)
+night_train_box.bind("<Enter>",night_train_box_hover)
+night_train_box.bind("<Leave>", Hover_Leave)
+alive_box.bind("<Enter>",alive_box_hover)
+alive_box.bind("<Leave>", Hover_Leave)
+first_death_box.bind("<Enter>",first_death_box_hover)
+first_death_box.bind("<Leave>", Hover_Leave)
+lights_on_box.bind("<Enter>",lights_on_box_hover)
+lights_on_box.bind("<Leave>", Hover_Leave)
+is_napping_box.bind("<Enter>",is_napping_box_hover)
+is_napping_box.bind("<Leave>", Hover_Leave)
+is_asleep_box.bind("<Enter>",is_asleep_box_hover)
+is_asleep_box.bind("<Leave>", Hover_Leave)
+sleep_lapse_box.bind("<Enter>",sleep_lapse_box_hover)
+sleep_lapse_box.bind("<Leave>", Hover_Leave)
+awake_lapse_box.bind("<Enter>",awake_lapse_box_hover)
+awake_lapse_box.bind("<Leave>", Hover_Leave)
+is_injured_box.bind("<Enter>",is_injured_box_hover)
+is_injured_box.bind("<Leave>", Hover_Leave)
+injured_count_box.bind("<Enter>",injured_count_box_hover)
+injured_count_box.bind("<Leave>", Hover_Leave)
+healed_lapse_box.bind("<Enter>",healed_lapse_box_hover)
+healed_lapse_box.bind("<Leave>", Hover_Leave)
+is_sick_box.bind("<Enter>",is_sick_box_hover)
+is_sick_box.bind("<Leave>", Hover_Leave)
+sick_count_box.bind("<Enter>",sick_count_box_hover)
+sick_count_box.bind("<Leave>", Hover_Leave)
+cured_lapse_box.bind("<Enter>",cured_lapse_box_hover)
+cured_lapse_box.bind("<Leave>", Hover_Leave)
+fatigue_lapse_box.bind("<Enter>",fatigue_lapse_box_hover)
+fatigue_lapse_box.bind("<Leave>", Hover_Leave)
+fatigue_mod_box.bind("<Enter>",fatigue_mod_box_hover)
+fatigue_mod_box.bind("<Leave>", Hover_Leave)
+is_fully_recovered_box.bind("<Enter>",is_fully_recovered_box_hover)
+is_fully_recovered_box.bind("<Leave>", Hover_Leave)
+recovery_time_box.bind("<Enter>",recovery_time_box_hover)
+recovery_time_box.bind("<Leave>", Hover_Leave)
+disturb_box.bind("<Enter>",disturb_box_hover)
+disturb_box.bind("<Leave>", Hover_Leave)
+overeat_box.bind("<Enter>",overeat_box_hover)
+overeat_box.bind("<Leave>", Hover_Leave)
+mistake_day_box.bind("<Enter>",mistake_day_box_hover)
+mistake_day_box.bind("<Leave>", Hover_Leave)
+care_mistake_box.bind("<Enter>",care_mistake_box_hover)
+care_mistake_box.bind("<Leave>", Hover_Leave)
+battles_box.bind("<Enter>",battles_box_hover)
+battles_box.bind("<Leave>", Hover_Leave)
+wins_box.bind("<Enter>",wins_box_hover)
+wins_box.bind("<Leave>", Hover_Leave)
+bm_gauge_box.bind("<Enter>",bm_gauge_box_hover)
+bm_gauge_box.bind("<Leave>", Hover_Leave)
+perfect_wins_box.bind("<Enter>",perfect_wins_box_hover)
+perfect_wins_box.bind("<Leave>", Hover_Leave)
+raw_life_box.bind("<Enter>",raw_life_box_hover)
+raw_life_box.bind("<Leave>", Hover_Leave)
+bonus_box.bind("<Enter>",bonus_box_hover)
+bonus_box.bind("<Leave>", Hover_Leave)
+health_points_box.bind("<Enter>",health_points_box_hover)
+health_points_box.bind("<Leave>", Hover_Leave)
+x_antibody_box.bind("<Enter>",x_antibody_box_hover)
+x_antibody_box.bind("<Leave>", Hover_Leave)
+weather_box.bind("<Enter>",weather_box_hover)
+weather_box.bind("<Leave>", Hover_Leave)
+current_temp_box.bind("<Enter>",current_temp_box_hover)
+current_temp_box.bind("<Leave>", Hover_Leave)
+current_habitat_box.bind("<Enter>",current_habitat_box_hover)
+current_habitat_box.bind("<Leave>", Hover_Leave)
+temp_goal_box.bind("<Enter>",temp_goal_box_hover)
+temp_goal_box.bind("<Leave>", Hover_Leave)
+
+# Tool Tip Bar at the bottom of the screen
+status_label = Label(gui, text='', bd=1, relief=SUNKEN, anchor=W)
+status_label.pack(fill=X, side=BOTTOM, ipady=2)
+
+speed_mult_box.focus_force()
+gui.mainloop()
